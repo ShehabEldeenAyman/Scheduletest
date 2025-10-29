@@ -1,0 +1,40 @@
+[project]
+name = "Schedule-test"
+version = "0.0.1"
+description = "RDF-Connect pipeline to ingest Waterinfo in a knowledge graph."
+authors = [
+    { name = "Shehabeldeen Abdelfatah", email = "shehab.ayman@vito.be" }
+]
+readme = "README.md"
+requires-python = "==3.13.*"
+license = "MIT"
+dependencies = [
+    "rdfc-runner>=0.0.3",
+    "schedulewaterinfo>=0.0.1",
+    "printprocessorpy>=0.0.1",
+    "schedulereader>=0.0.1",
+]
+
+[project.urls]
+Homepage = "https://rdf-connect.github.io"
+Repository = "https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline"
+Issues = "https://github.com/rdf-connect/vienna-weather-forecast-kg-pipeline/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["resources"]
+
+[tool.hatch.envs.default]
+type = "virtual"
+path = ".venv"
+system-packages = false
+installer = "uv"
+env-vars = { PYTHONPATH = "src" }
+
+[tool.uv.sources]
+schedulewaterinfo = { path = "../processorrepo/schedulewaterinfo/dist/schedulewaterinfo-0.0.1.tar.gz" }
+PrintProcessorPy = { path = "../processorrepo/PrintProcessorPy/dist/printprocessorpy-0.0.1.tar.gz" }
+schedulereader = { path = "../processorrepo/schedulereader/dist/schedulereader-0.0.1.tar.gz" }

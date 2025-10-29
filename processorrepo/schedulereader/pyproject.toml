@@ -1,0 +1,41 @@
+[project]
+name = "schedulereader"
+version = "0.0.1"
+description = "Template processor to kickstart the development of your next Python RDF-Connect processor."
+authors = [
+    { name = "Shehabeldeen Abdelfatah", email = "shehab.ayman@vito.be" }
+]
+readme = "README.md"
+requires-python = ">= 3.12"
+license = "MIT"
+dependencies = [
+    "pytest>=8.4.1",
+    "pytest-asyncio>=1.1.0",
+    "rdfc-proto>=1.0.0",
+    "rdfc-runner>=1.0.0",
+    "pandas>=2.3.3",
+    "schedule>=1.2.2"
+]
+
+[project.urls]
+Homepage = "https://rdf-connect.github.io"
+Repository = "https://github.com/rdf-connect/template-processor-py"
+Issues = "https://github.com/rdf-connect/template-processor-py/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/schedulereader"]
+
+[tool.hatch.envs.default]
+type = "virtual"
+path = ".venv"
+system-packages = false
+installer = "uv"
+env-vars = { PYTHONPATH = "src" }
+

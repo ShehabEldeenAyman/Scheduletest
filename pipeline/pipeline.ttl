@@ -1,0 +1,57 @@
+@prefix rdfc: <https://w3id.org/rdf-connect#>.
+@prefix owl: <http://www.w3.org/2002/07/owl#>.
+@prefix ex: <http://example.com/>.
+@prefix tree: <https://w3id.org/tree#>.
+@prefix sosa: <http://www.w3.org/ns/sosa/>.
+### Import runners and processors
+<> owl:imports
+<./node_modules/@rdfc/js-runner/index.ttl>,    # node runner
+<./.venv/lib/python3.13/site-packages/rdfc_runner/index.ttl>,#python runner
+<./node_modules/@rdfc/log-processor-ts/processor.ttl>,
+<./.venv/lib/python3.13/site-packages/schedulewaterinfo/processor.ttl>,
+<./.venv/lib/python3.13/site-packages/PrintProcessorPy/processor.ttl>,
+<./.venv/lib/python3.13/site-packages/schedulereader/processor.ttl>
+
+.
+
+### Define the channels
+<testchannel> a rdfc:Reader, rdfc:Writer. # channel
+<testchannel2> a rdfc:Reader, rdfc:Writer. # channel
+
+
+
+### Define the pipeline
+<> a rdfc:Pipeline;
+    rdfc:consistsOf 
+    [
+    rdfc:instantiates  rdfc:NodeRunner; 
+    rdfc:processor
+        <logger>
+    ]
+    ,
+    [
+    rdfc:instantiates rdfc:PyRunner; #runners for lgoic written in python
+    rdfc:processor
+        <GentCanal>,
+        <FileSaver>,
+        <scheduleread>
+        ;
+    ].
+
+
+### Define the processors
+<GentCanal> a rdfc:schedulewaterinfo;
+rdfc:writer <testchannel>;
+rdfc:loc './generated/Gent_Terneuzen_River_Stage_combined.csv'.
+
+<scheduleread> a rdfc:schedulereader;
+rdfc:writer <testchannel2>.
+
+<FileSaver> a rdfc:PrintProcessorPy;
+rdfc:reader <testchannel2>;
+rdfc:loc "./generated/test".
+
+<logger> a rdfc:LogProcessorJs;
+    rdfc:reader <testchannel2>;
+    rdfc:level "info";
+    rdfc:label "output".
